@@ -245,7 +245,6 @@ def simulation_page():
             else:
                 # 惑星の速度
                 i += 3
-                frame_bar.progress(round(i/frames))
 
 def explanation_page():
     st.title("地球と火星の会合計算")
