@@ -243,7 +243,7 @@ def simulation_page():
             elif stop:
                 stop_animation = True
             else:
-                i += 1
+                i += 5
                 frame_bar.progress(i/frames)
 
 def explanation_page():
@@ -292,6 +292,9 @@ def explanation_page():
         $ b $: 軌道短半径  
         $ u $: 離心近点角  
         '''
+    r'''
+    となります。
+    '''
 
 
 
