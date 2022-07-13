@@ -1,0 +1,5 @@
+streamlitの設定の変え方
+
+コマンドで
+open ~/.streamlit/config.toml
+を実行する
