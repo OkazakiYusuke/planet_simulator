@@ -212,6 +212,8 @@ def simulation_page():
 
     # st.sidebar.markdown("## Settings")
 
+    speed = st.slider("惑星の速度", 1, 10)
+
     col1, col2 = st.columns(2)
     with col1:
         start = st.button("start")
@@ -234,11 +236,12 @@ def simulation_page():
         sun, = ax.plot(0, 0, c='red', marker='o', markersize=14) # マーカー：unpackで,をつける
 
         i = 0
-        speed = 1
         stop_animation = False
         while True:
             animate(i, stop_animation)
-            if i == frames:
+            if (frames-speed) <= i:
+                i = frames
+                animate(i, stop_animation)
                 st.stop()
             elif stop:
                 stop_animation = True
