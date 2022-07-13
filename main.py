@@ -233,44 +233,47 @@ def simulation_page():
         # 太陽の位置
         sun, = ax.plot(0, 0, c='red', marker='o', markersize=14) # マーカー：unpackで,をつける
 
-        frame_bar = st.progress(0)
         i = 0
+        speed = 1
         stop_animation = False
         while True:
             animate(i, stop_animation)
             if i == frames:
-                stop_animation = True
+                st.stop()
             elif stop:
                 stop_animation = True
             else:
                 # 惑星の速度
-                i += 3
+                i += speed
 
 def explanation_page():
     st.title("地球と火星の会合計算")
     r'''
+    ### 1. 地球と火星の会合周期
     まず、地球と火星の会合周期を求めます。ここで、会合周期とは、太陽から見て一直線に2つの惑星が並ぶ現象のことです。
     地球の公転周期は$ E=365 $日、火星の公転周期は$ P=687 $日なので、それぞれが1日に進む角度(=角速度)は以下のようになります。
     
     地球が1日に進む角度:  
-    ### $$ \frac{360°}{E} $$
+    #### $$ \frac{360°}{E} $$
     
     火星が1日に進む角度:
-    ### $$ \frac{360°}{P} $$
+    #### $$ \frac{360°}{P} $$
 
     この2つの惑星の角速度の差に会合周期Sをかけることで、火星に対して地球の進んだ角度が360°となるので、
-    ### $$ (\frac{360°}{E}-\frac{360°}{P})×S=360° \qquad \therefore \frac{1}{E}-\frac{1}{P} = \frac{1}{S} $$
+    #### $$ (\frac{360°}{E}-\frac{360°}{P})×S=360° \qquad \therefore \frac{1}{E}-\frac{1}{P} = \frac{1}{S} $$
     となります。
     以上より、会合周期は、
-    ### $$ S=\frac{EP}{P-E}=\frac{365 \times 687}{687-365}=778.7\cdots \fallingdotseq 779日 $$
+    #### $$ S=\frac{EP}{P-E}=\frac{365 \times 687}{687-365}=778.7\cdots \fallingdotseq 779日 $$
     となります。779日は約2年2ヶ月なので、地球と火星の会合周期は約2年2ヶ月です。
+
+    ### 2. 軌道平面上の惑星の位置
     続いて、軌道平面上の惑星の位置を求めます。
     下の図を見てください。
     '''
     image = Image.open('image/惑星軌道円.jpg')
     col1, col2, col3, col4, col5, col6 = st.columns(6)
     with col2:
-        st.image(image, caption="惑星の楕円軌道円と、補助円", width=400)
+        st.image(image, caption="惑星の楕円軌道円と補助円", width=400)
     r'''
     図中に2つの円が見えます。内側の楕円については、ケプラーの第一法則「惑星は楕円軌道をとる」に基づいています。ここで、この楕円軌道の焦点は点Fの太陽です。  
     一方で、外側の円は点Oを中心とした円軌道であり、この補助円を用いることで、計算がしやすくなります。  
@@ -293,7 +296,19 @@ def explanation_page():
         $ u $: 離心近点角  
         '''
     r'''
+    となります。  
+    軌道離心率$e$に関しては、惑星Pに対して焦点$F$と$F'$を用意し、2点の焦点間の関係から導くことが可能です。  
+    $F'F$間の長さは三平方の定理より、$2\sqrt{a^{2}-b^{2}}$となり、それは、$2ae$と等しいため、
+    ##### $$ e = \frac{\sqrt{a^{2}-b^{2}}}{a} = \sqrt{1-\frac{b^{2}}{a^{2}}} $$  
+    図からわかるように、惑星の座標($x$, $y$)は、  
+    ##### $$ x = acosu - ae = rcosf $$  
+    ##### $$ y = bsinu = rsinf $$  
+    となります。よって動径$r$は、  
+    ##### $$ r = \sqrt{x^{2}+y^{2}} = a(1-ecosu) \cdots① $$
     となります。
+    '''
+    r'''
+    ### 3. ケプラー方程式
     '''
 
 
