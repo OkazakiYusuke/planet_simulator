@@ -243,7 +243,8 @@ def simulation_page():
             elif stop:
                 stop_animation = True
             else:
-                i += 5
+                # 惑星の速度
+                i += 3
                 frame_bar.progress(i/frames)
 
 def explanation_page():
