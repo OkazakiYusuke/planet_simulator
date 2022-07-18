@@ -169,7 +169,6 @@ def simulation_page():
 
 
     # アニメーション更新関数
-    @st.cache
     def animate(frames_cnt, stop_animation):
         if stop_animation:
             print('stop!!')
