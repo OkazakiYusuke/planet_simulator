@@ -169,44 +169,41 @@ def simulation_page():
 
 
     # アニメーション更新関数
-    def animate(frames_cnt, stop_animation):
-        if stop_animation:
-            print('stop!!')
-        else:
-            JD = JD1 + frames_cnt
-            tt = JD
-            JD_text.set_text('JD(UT): %7d ' % (JD))
-            Year, Month, Day, Hour, Minute = func.JDToDay(JD)
-            UT9h_text.set_text('UT+9h: %d.%d.%d' % (Year, Month, Day))
-            time_text.set_text('counts = %3d ' % (frames_cnt))
+    def animate(frames_cnt):
+        JD = JD1 + frames_cnt
+        tt = JD
+        JD_text.set_text('JD(UT): %7d ' % (JD))
+        Year, Month, Day, Hour, Minute = func.JDToDay(JD)
+        UT9h_text.set_text('UT+9h: %d.%d.%d' % (Year, Month, Day))
+        time_text.set_text('counts = %3d ' % (frames_cnt))
 
-            # 惑星の離心近点角　ケプラー方程式を解く
-            # 地球
-            uE0 = Earth.n*(tt-Earth.t0)
-            uE1 = uE0
-            for nnE in range(5):
-                uE2 = uE1-func.Kepller_function(Earth.n, tt, Earth.t0, Earth.e, uE1)/func.diff_function(Earth.e, uE1)
-                DIFE = uE2-uE1
-                uE1 = uE2   
-            xxE, yyE = func.ellipse_Kepller(uE1, Earth.a, Earth.e)
-            x_E, y_E, z_E = func.coordinate_transformation(xxE,yyE, Earth.cosohm,Earth.sinohm,Earth.cosi,Earth.sini, Earth.cosomega, Earth.sinomega)
-            planetE.set_xdata(x_E) # 地球x座標更新
-            planetE.set_ydata(y_E) # 地球y座標更新
-            lineE.set_ydata(Earth.yy)
+        # 惑星の離心近点角　ケプラー方程式を解く
+        # 地球
+        uE0 = Earth.n*(tt-Earth.t0)
+        uE1 = uE0
+        for nnE in range(5):
+            uE2 = uE1-func.Kepller_function(Earth.n, tt, Earth.t0, Earth.e, uE1)/func.diff_function(Earth.e, uE1)
+            DIFE = uE2-uE1
+            uE1 = uE2   
+        xxE, yyE = func.ellipse_Kepller(uE1, Earth.a, Earth.e)
+        x_E, y_E, z_E = func.coordinate_transformation(xxE,yyE, Earth.cosohm,Earth.sinohm,Earth.cosi,Earth.sini, Earth.cosomega, Earth.sinomega)
+        planetE.set_xdata(x_E) # 地球x座標更新
+        planetE.set_ydata(y_E) # 地球y座標更新
+        lineE.set_ydata(Earth.yy)
 
-            # 火星
-            uM0 = Mars.n*(tt-Mars.t0)
-            uM1 = uM0
-            for nnM in range(10):
-                uM2 = uM1-func.Kepller_function(Mars.n, tt, Mars.t0, Mars.e, uM1)/func.diff_function(Mars.e, uM1)
-                DIFE = uM2-uM1
-                uM1 = uM2   
-            xxM, yyM = func.ellipse_Kepller(uM1, Mars.a, Mars.e)
-            x_M, y_M, zM = func.coordinate_transformation(xxM, yyM, Mars.cosohm,Mars.sinohm,Mars.cosi,Mars.sini, Mars.cosomega, Mars.sinomega)
-            planetM.set_xdata(x_M) # 火星x座標更新
-            planetM.set_ydata(y_M) # 火星y座標更新
+        # 火星
+        uM0 = Mars.n*(tt-Mars.t0)
+        uM1 = uM0
+        for nnM in range(10):
+            uM2 = uM1-func.Kepller_function(Mars.n, tt, Mars.t0, Mars.e, uM1)/func.diff_function(Mars.e, uM1)
+            DIFE = uM2-uM1
+            uM1 = uM2   
+        xxM, yyM = func.ellipse_Kepller(uM1, Mars.a, Mars.e)
+        x_M, y_M, zM = func.coordinate_transformation(xxM, yyM, Mars.cosohm,Mars.sinohm,Mars.cosi,Mars.sini, Mars.cosomega, Mars.sinomega)
+        planetM.set_xdata(x_M) # 火星x座標更新
+        planetM.set_ydata(y_M) # 火星y座標更新
 
-            the_plot.pyplot(fig)
+        the_plot.pyplot(fig)
 
     # streamlitの設定
 
@@ -236,15 +233,12 @@ def simulation_page():
         sun, = ax.plot(0, 0, c='red', marker='o', markersize=14) # マーカー：unpackで,をつける
 
         i = 0
-        stop_animation = False
         while True:
-            animate(i, stop_animation)
+            animate(i)
             if (frames-speed) <= i:
                 i = frames
-                animate(i, stop_animation)
+                animate(i)
                 st.stop()
-            elif stop:
-                stop_animation = True
             else:
                 # 惑星の速度
                 i += speed
