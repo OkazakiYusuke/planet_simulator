@@ -169,6 +169,7 @@ def simulation_page():
 
 
     # アニメーション更新関数
+    @st.cache
     def animate(frames_cnt, stop_animation):
         if stop_animation:
             print('stop!!')
@@ -184,7 +185,7 @@ def simulation_page():
             # 地球
             uE0 = Earth.n*(tt-Earth.t0)
             uE1 = uE0
-            for nnE in range(10):
+            for nnE in range(5):
                 uE2 = uE1-func.Kepller_function(Earth.n, tt, Earth.t0, Earth.e, uE1)/func.diff_function(Earth.e, uE1)
                 DIFE = uE2-uE1
                 uE1 = uE2   
